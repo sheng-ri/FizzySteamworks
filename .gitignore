@@ -19,3 +19,6 @@ sysinfo.txt
 /*.unityproj
 /*.booproj
 /.idea*/
+
+### Custom
+/bin

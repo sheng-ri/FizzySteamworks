@@ -231,7 +231,7 @@ namespace Mirror.FizzySteam
                         Array.Copy(segment.Array, segment.Offset, segmentCopy, 0, segment.Count);
                         int channelIdCopy = channelId;
 
-                        BufferedData.Add(() => OnReceivedData(segmentCopy, channelIdCopy));
+                        BufferedData.Add(() => OnReceivedData(new ArraySegment<byte>(segmentCopy), channelIdCopy));
                     }
                 }
             }
