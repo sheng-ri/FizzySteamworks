@@ -5,8 +5,37 @@
 ## 目标
 
 实现FizzySteamworks库的**LAN直连模式**，通过配置文件快速切换UDP直连和Steam P2P两种网络模式，用于开发和测试。
+目前代码目标游戏**Sephiria 赛菲莉娅**
 
-## 如何使用
+## 编译 DLL
+
+### 前置条件
+- 安装 .NET SDK（`dotnet` 命令可用）
+- 拥有 Heathen.Steamworks 库
+
+### 编译步骤
+
+**Linux/macOS：**
+```bash
+export DLL_PATH=/path/to/game/Plugins
+./build.sh Release
+```
+
+**Windows：**
+```cmd
+set DLL_PATH=C:\path\to\game\Plugins
+build.bat Release
+```
+
+编译生成的 DLL 文件位置：`build/output/FizzySteamworks.dll`
+
+### 使用编译的 DLL
+1. 找到你的游戏 `Plugins` 文件夹
+2. 备份原始的 `FizzySteamworks.dll`
+3. 将编译生成的 DLL 复制到该文件夹替换原文件
+4. 确保 `lan_config.json` 在游戏运行目录（与 EXE 同级）
+
+## 配置
 
 ### 1. 配置文件
 
@@ -41,11 +70,11 @@
 | `connect_listen_ip` | 服务器监听的IP地址（`0.0.0.0` = 所有接口） |
 | `listen_port` | 监听端口 |
 
-## 做了什么更改
+## 实现细节
 
 ### NextCommon.cs
-- **配置加载逻辑**：改为从应用运行目录读取 `lan_config.json`
-- **自动创建配置**：如果文件不存在，自动生成默认配置文件（`lan=false`）
+- **配置加载逻辑**：从应用运行目录读取 `lan_config.json`
+- **自动创建配置**：文件不存在时自动生成默认配置（`lan=false`）
 - 添加详细日志输出便于调试
 
 ### NextClient.cs
@@ -60,7 +89,20 @@
 
 ## 快速开始
 
-1. 运行应用，自动在运行目录生成 `lan_config.json`
-2. 编辑配置文件，设置 `lan=true` 和网络参数
-3. 重启应用，日志会显示 "Loaded LAN config from ..." 或 "Created default config file ..."
-4. 完成！客户端和服务器现在使用相应模式连接
+1. 设置 DLL 路径：
+   ```bash
+   export DLL_PATH=/path/to/game/Plugins  # 或 Windows: set DLL_PATH=...
+   ```
+
+2. 编译生成 DLL：
+   ```bash
+   ./build.sh Release  # 或 Windows: build.bat Release
+   ```
+
+3. 将 DLL 复制到游戏 Plugins 文件夹替换原文件
+
+4. 运行游戏，自动在运行目录生成 `lan_config.json`
+
+5. 编辑配置文件，设置 `lan=true` 和网络参数
+
+6. 重启游戏，享受LAN直连模式！
