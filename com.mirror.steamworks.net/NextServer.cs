@@ -25,6 +25,7 @@ namespace Mirror.FizzySteam
         private static NextServer server;
         private NextServer(int maxConnections)
         {
+            Config.EnsureLoaded();
             this.maxConnections = maxConnections;
             connToMirrorID = new BidirectionalDictionary<HSteamNetConnection, int>();
             steamIDToMirrorID = new BidirectionalDictionary<CSteamID, int>();
@@ -40,7 +41,7 @@ namespace Mirror.FizzySteam
         {
             server = new NextServer(maxConnections);
 
-            server.OnConnectedWithAddress += (id,addres) => transport.OnServerConnectedWithAddress.Invoke(id,addres);
+            server.OnConnectedWithAddress += (id, _) => transport.OnServerConnected.Invoke(id);
             server.OnDisconnected += (id) => transport.OnServerDisconnected.Invoke(id);
             server.OnReceivedData += (id, data, ch) => transport.OnServerDataReceived.Invoke(id, new ArraySegment<byte>(data), ch);
             server.OnReceivedError += (id, error, reason) => transport.OnServerError.Invoke(id, error, reason);
@@ -65,6 +66,7 @@ namespace Mirror.FizzySteam
 
         private void Host()
         {
+            Config config = Config.Instance;
             SteamNetworkingConfigValue_t[] options = new SteamNetworkingConfigValue_t[] { };
             if (config.lan)
             {

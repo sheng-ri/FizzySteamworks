@@ -1,7 +1,7 @@
 ﻿#if !DISABLESTEAMWORKS
-using Steamworks;
 using System;
 using System.Collections.Generic;
+using Steamworks;
 using UnityEngine;
 
 namespace Mirror.FizzySteam
@@ -22,8 +22,8 @@ namespace Mirror.FizzySteam
         public static LegacyServer CreateServer(FizzySteamworks transport, int maxConnections)
         {
             server = new LegacyServer(transport, maxConnections);
-            
-            server.OnConnectedWithAddress += (id,addres) => transport.OnServerConnectedWithAddress.Invoke(id,addres);
+
+            server.OnConnectedWithAddress += (id, _) => transport.OnServerConnected.Invoke(id);
             server.OnDisconnected += (id) => transport.OnServerDisconnected.Invoke(id);
             server.OnReceivedData += (id, data, channel) => transport.OnServerDataReceived.Invoke(id, new ArraySegment<byte>(data), channel);
             server.OnReceivedError += (id, error, reason) => transport.OnServerError.Invoke(id, error, reason);

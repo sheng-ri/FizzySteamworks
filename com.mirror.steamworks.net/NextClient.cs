@@ -28,6 +28,7 @@ namespace Mirror.FizzySteam
 
         private NextClient(FizzySteamworks transport)
         {
+            Config.EnsureLoaded();
             ConnectionTimeout = TimeSpan.FromSeconds(Math.Max(1, transport.Timeout));
             BufferedData = new List<Action>();
         }
@@ -74,6 +75,7 @@ namespace Mirror.FizzySteam
             {
                 SteamNetworkingConfigValue_t[] options = new SteamNetworkingConfigValue_t[] { };
                 
+                Config config = Config.Instance;
                 if (config.lan)
                 {
                     // LAN mode: connect via IP address
