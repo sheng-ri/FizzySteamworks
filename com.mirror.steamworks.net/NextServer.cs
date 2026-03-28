@@ -72,9 +72,9 @@ namespace Mirror.FizzySteam
             if (config.lan)
             {
                 // LAN mode: listen on IP address
-                Debug.Log($"Listening on {config.connect_listen_ip}:{config.listen_port}");
+                Debug.Log($"Listening on {config.listen_ip}:{config.listen_port}");
                 SteamNetworkingIPAddr localAddress = new SteamNetworkingIPAddr();
-                localAddress.ParseString($"{config.connect_listen_ip}:{config.listen_port}");
+                localAddress.ParseString($"{config.listen_ip}:{config.listen_port}");
 #if UNITY_SERVER
                 listenSocket = SteamGameServerNetworkingSockets.CreateListenSocketIP(ref localAddress, options.Length, options);
 #else

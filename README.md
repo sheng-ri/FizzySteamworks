@@ -18,7 +18,8 @@
 {
   "lan": false,
   "connect_ip": "",
-  "connect_listen_ip": "",
+  "connect_port": 0,
+  "listen_ip": "",
   "listen_port": 0
 }
 ```
@@ -28,7 +29,8 @@
 {
   "lan": true,
   "connect_ip": "127.0.0.1",
-  "connect_listen_ip": "0.0.0.0",
+  "connect_port": 27015,
+  "listen_ip": "0.0.0.0",
   "listen_port": 27015
 }
 ```
@@ -39,8 +41,9 @@
 |------|------|
 | `lan` | `true` = LAN直连模式，`false` = P2P模式 |
 | `connect_ip` | 客户端连接的服务器IP地址 |
-| `connect_listen_ip` | 服务器监听的IP地址（`0.0.0.0` = 所有接口） |
-| `listen_port` | 监听端口 |
+| `connect_port` | 客户端连接目标端口 |
+| `listen_ip` | 服务器监听的IP地址（`0.0.0.0` = 所有接口） |
+| `listen_port` | 服务器监听端口 |
 
 ## 实现细节
 
@@ -67,7 +70,8 @@
 - 字段保持为：
   - `lan`
   - `connect_ip`
-  - `connect_listen_ip`
+  - `connect_port`
+  - `listen_ip`
   - `listen_port`
 
 ### Mirror 事件兼容

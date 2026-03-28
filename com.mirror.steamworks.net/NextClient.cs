@@ -80,9 +80,9 @@ namespace Mirror.FizzySteam
                 if (config.lan)
                 {
                     // LAN mode: connect via IP address
-                    Debug.Log($"Connecting via IP address to {config.connect_ip}:{config.listen_port}");
+                    Debug.Log($"Connecting via IP address to {config.connect_ip}:{config.connect_port}");
                     SteamNetworkingIPAddr remoteAddress = new SteamNetworkingIPAddr();
-                    remoteAddress.ParseString($"{config.connect_ip}:{config.listen_port}");
+                    remoteAddress.ParseString($"{config.connect_ip}:{config.connect_port}");
                     HostConnection = SteamNetworkingSockets.ConnectByIPAddress(ref remoteAddress, options.Length, options);
                 }
                 else

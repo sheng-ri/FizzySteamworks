@@ -133,7 +133,8 @@ lan_config.json  ← 首次生成，默认 P2P 模式
 {
   "lan": true,
   "connect_ip": "192.168.1.100",
-  "connect_listen_ip": "0.0.0.0",
+  "connect_port": 27015,
+  "listen_ip": "0.0.0.0",
   "listen_port": 27015
 }
 ```

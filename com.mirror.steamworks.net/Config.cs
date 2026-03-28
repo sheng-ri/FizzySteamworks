@@ -12,7 +12,8 @@ namespace Mirror.FizzySteam
 
         public bool lan;
         public string connect_ip;
-        public string connect_listen_ip;
+        public int connect_port;
+        public string listen_ip;
         public int listen_port;
 
         public static Config Instance
@@ -47,6 +48,10 @@ namespace Mirror.FizzySteam
                     {
                         instance = CreateDefault();
                     }
+                    else
+                    {
+                        instance.NormalizeAfterLoad();
+                    }
 
                     Debug.Log($"Loaded LAN config from {configPath}");
                     return;
@@ -76,9 +81,31 @@ namespace Mirror.FizzySteam
             {
                 lan = false,
                 connect_ip = "",
-                connect_listen_ip = "",
+                connect_port = 0,
+                listen_ip = "",
                 listen_port = 0
             };
+        }
+
+        private void NormalizeAfterLoad()
+        {
+            connect_ip = connect_ip ?? string.Empty;
+            listen_ip = listen_ip ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(listen_ip) && !string.IsNullOrWhiteSpace(connect_listen_ip))
+            {
+                listen_ip = connect_listen_ip;
+            }
+
+            if (connect_port < 0)
+            {
+                connect_port = 0;
+            }
+
+            if (listen_port < 0)
+            {
+                listen_port = 0;
+            }
         }
     }
 }
