@@ -5,7 +5,11 @@
 ## 目标
 
 实现FizzySteamworks库的**LAN直连模式**，通过配置文件快速切换UDP直连和Steam P2P两种网络模式，用于开发和测试。
-目前代码目标游戏**Sephiria 赛菲莉娅**
+
+## 已测试游戏
+
+- Sephiria 赛菲莉娅
+- Super Raft Boat Together
 
 ## 配置
 
@@ -17,6 +21,7 @@
 ```json
 {
   "lan": false,
+  "auto_reload": false,
   "connect_ip": "",
   "connect_port": 0,
   "listen_ip": "",
@@ -28,6 +33,7 @@
 ```json
 {
   "lan": true,
+  "auto_reload": true,
   "connect_ip": "127.0.0.1",
   "connect_port": 27015,
   "listen_ip": "0.0.0.0",
@@ -40,6 +46,7 @@
 | 参数 | 说明 |
 |------|------|
 | `lan` | `true` = LAN直连模式，`false` = P2P模式 |
+| `auto_reload` | `true` = 监听 `lan_config.json` 变化并自动重载，`false` = 仅启动时加载 |
 | `connect_ip` | 客户端连接的服务器IP地址 |
 | `connect_port` | 客户端连接目标端口 |
 | `listen_ip` | 服务器监听的IP地址（`0.0.0.0` = 所有接口） |
@@ -67,12 +74,18 @@
 ### Config.cs
 - 保留 `Config` 类型，并以单例 `Config.Instance` 提供访问
 - 运行目录存在 `lan_config.json` 时加载，不存在则生成默认文件
+- 负责配置模型、加载与重载入口控制
 - 字段保持为：
   - `lan`
+  - `auto_reload`
   - `connect_ip`
   - `connect_port`
   - `listen_ip`
   - `listen_port`
+
+### ConfigFileWatcher.cs
+- 独立文件监听类，封装 `FileSystemWatcher` 逻辑
+- 仅在 `auto_reload=true` 时启动监听，文件变化后触发 `Config` 重载
 
 ### Mirror 事件兼容
 - 未新增 `OnServerConnectedWithAddress` 字段
