@@ -76,6 +76,7 @@ namespace Mirror.FizzySteam
             {
                 SteamNetworkingConfigValue_t[] options = new SteamNetworkingConfigValue_t[] { };
                 
+                Config config = Config.Instance;
                 if (config.lan)
                 {
                     // LAN mode: connect via IP address

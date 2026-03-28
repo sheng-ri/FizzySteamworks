@@ -13,8 +13,6 @@ namespace Mirror.FizzySteam
         private static IClient client;
         private static IServer server;
 
-        public Action<int, string> OnServerConnectedWithAddress;
-
         [SerializeField]
         public EP2PSend[] Channels = new EP2PSend[2] { EP2PSend.k_EP2PSendReliable, EP2PSend.k_EP2PSendUnreliableNoDelay };
 

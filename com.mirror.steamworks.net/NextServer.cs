@@ -42,7 +42,7 @@ namespace Mirror.FizzySteam
         {
             server = new NextServer(maxConnections);
 
-            server.OnConnectedWithAddress += (id, addres) => transport.OnServerConnectedWithAddress.Invoke(id, addres);
+            server.OnConnectedWithAddress += (id, _) => transport.OnServerConnected.Invoke(id);
             server.OnDisconnected += (id) => transport.OnServerDisconnected.Invoke(id);
             server.OnReceivedData += (id, segment, channelId) => transport.OnServerDataReceived.Invoke(id, segment, channelId);
             server.OnReceivedError += (id, error, reason) => transport.OnServerError.Invoke(id, error, reason);
@@ -68,6 +68,7 @@ namespace Mirror.FizzySteam
         private void Host()
         {
             SteamNetworkingConfigValue_t[] options = new SteamNetworkingConfigValue_t[] { };
+            Config config = Config.Instance;
             if (config.lan)
             {
                 // LAN mode: listen on IP address
