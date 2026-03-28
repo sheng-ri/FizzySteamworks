@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>FizzySteamworks</AssemblyName>
+    <RootNamespace>Mirror.FizzySteam</RootNamespace>
+    <Version>6.0.1</Version>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <ReferencePath>lib</ReferencePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="com.mirror.steamworks.net/*.cs" />
+  </ItemGroup>
+
+  <!-- <ItemGroup Condition="'lib' != ''"> -->
+  <ItemGroup>
+    <Reference Include="Steamworks.NET">
+      <HintPath>lib/com.rlabrecque.steamworks.net.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror">
+      <HintPath>lib/Mirror.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>lib/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>lib/UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+        <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>lib/UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
