@@ -68,11 +68,30 @@ namespace Mirror.FizzySteam
         private void Host()
         {
             SteamNetworkingConfigValue_t[] options = new SteamNetworkingConfigValue_t[] { };
+            if (config.lan)
+            {
+                // LAN mode: listen on IP address
+                Debug.Log($"Listening on {config.connect_listen_ip}:{config.listen_port}");
+                SteamNetworkingIPAddr localAddress = new SteamNetworkingIPAddr();
+                localAddress.ParseString($"{config.connect_listen_ip}:{config.listen_port}");
 #if UNITY_SERVER
-            listenSocket = SteamGameServerNetworkingSockets.CreateListenSocketP2P(0, options.Length, options);
+                listenSocket = SteamGameServerNetworkingSockets.CreateListenSocketIP(ref localAddress, options.Length, options);
 #else
-            listenSocket = SteamNetworkingSockets.CreateListenSocketP2P(0, options.Length, options);
+                listenSocket = SteamNetworkingSockets.CreateListenSocketIP(ref localAddress, options.Length, options);
 #endif
+                Debug.Log("Server socket created in LAN mode");
+            }
+            else
+            {
+                // P2P mode
+                Debug.Log("Listening for P2P connections");
+#if UNITY_SERVER
+                listenSocket = SteamGameServerNetworkingSockets.CreateListenSocketP2P(0, options.Length, options);
+#else
+                listenSocket = SteamNetworkingSockets.CreateListenSocketP2P(0, options.Length, options);
+#endif
+                Debug.Log("Server socket created in P2P mode");
+            }
         }
 
         private void OnConnectionStatusChanged(SteamNetConnectionStatusChangedCallback_t param)

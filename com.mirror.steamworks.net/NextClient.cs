@@ -74,15 +74,27 @@ namespace Mirror.FizzySteam
 
             try
             {
-                hostSteamID = new CSteamID(UInt64.Parse(host));
+                SteamNetworkingConfigValue_t[] options = new SteamNetworkingConfigValue_t[] { };
+                
+                if (config.lan)
+                {
+                    // LAN mode: connect via IP address
+                    Debug.Log($"Connecting via IP address to {config.connect_ip}:{config.listen_port}");
+                    SteamNetworkingIPAddr remoteAddress = new SteamNetworkingIPAddr();
+                    remoteAddress.ParseString($"{config.connect_ip}:{config.listen_port}");
+                    HostConnection = SteamNetworkingSockets.ConnectByIPAddress(ref remoteAddress, options.Length, options);
+                }
+                else
+                {
+                    // P2P mode: connect via Steam ID
+                    hostSteamID = new CSteamID(UInt64.Parse(host));
+                    SteamNetworkingIdentity smi = new SteamNetworkingIdentity();
+                    smi.SetSteamID(hostSteamID);
+                    HostConnection = SteamNetworkingSockets.ConnectP2P(ref smi, 0, options.Length, options);
+                }
+
                 connectedComplete = new TaskCompletionSource<Task>();
                 OnConnected += SetConnectedComplete;
-
-                SteamNetworkingIdentity smi = new SteamNetworkingIdentity();
-                smi.SetSteamID(hostSteamID);
-
-                SteamNetworkingConfigValue_t[] options = new SteamNetworkingConfigValue_t[] { };
-                HostConnection = SteamNetworkingSockets.ConnectP2P(ref smi, 0, options.Length, options);
 
                 Task connectedCompleteTask = connectedComplete.Task;
                 Task timeOutTask = Task.Delay(ConnectionTimeout, cancelToken.Token);
